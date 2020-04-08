@@ -21,17 +21,14 @@ contains(QMAKE_HOST.os, Linux):{
 }
 
 
-deployTest.commands = $$DEPLOYER -bin $$exec clear -qmake $$QMAKE_BIN -targetDir $$PWD/deployTests -libDir $$PWD -recursiveDepth 5
+!android:deployTest.commands = $$DEPLOYER -bin $$exec clear -qmake $$QMAKE_BIN -targetDir $$PWD/deployTests -libDir $$PWD -recursiveDepth 5
 
 unix:!android:testRSA.commands = $$PWD/deployTests/Qt-SecretTest.sh
-win32:testRSA.commands = $$PWD/deployTests/Qt-SecretTest.exe >> $$PWD/buildLog.log 2>>&1
-
+win32:testRSA.commands = $$PWD/deployTests/Qt-SecretTest.exe
 unix:!android:testAES.commands = $$PWD/deployTests/QAESEncryption.sh
-win32:testAES.commands = $$PWD/deployTests/QAESEncryption.exe >> $$PWD/buildLog.log 2>>&1
-
+win32:testAES.commands = $$PWD/deployTests/QAESEncryption.exe
 unix:!android:testGMP.commands = $$PWD/deployTests/QtBigIntTests.sh
-win32:testGMP.commands =$$PWD/deployTests/QtBigIntTests.exe >> $$PWD/buildLog.log 2>>&1
-
+win32:testGMP.commands =$$PWD/deployTests/QtBigIntTests.exe
 
 test.depends += deployTest
 test.depends += testRSA
