@@ -1,4 +1,4 @@
-# ![Qt-Secret Logo](res/png/QtSecretLogo2.png)
+# ![Qt-Secret Logo](res/png/Qt-Secret_Banner_web.png)
 
 Fast encryption library supporting RSA and AES algorithms.
 
@@ -14,7 +14,9 @@ The current implementation supports the following key sizes:
  * RSA512
  * RSA1024 
  * RSA2048
- * RSA4096 
+ * RSA3072
+ * RSA4096
+ * RSA6144
  * RSA8192 
 
 #### Supported futures 
@@ -52,12 +54,24 @@ By default the padding method is `ISO`, however, the class supports:
 
 # Build
 
+## with qmake 
+
  * git clone https://github.com/QuasarApp/Qt-Secret.git
  * cd Qt-Secret
  * git submodule update --init --recursive
  * sudo apt install qt5-default
  * qmake -r DEFINE+=WITHOUT_GUI Qt-Secret.pro 
   > DEFINE+=WITHOUT_GUI fot build without gui example, if you want build gui example remove this line. For build the gui example you need to install qml controls 2 in you os. Try **sudo apt install qml-module-qtquick-controls2 qtdeclarative5-dev qtdeclarative5-qtquick2-plugin**
+ * make -j8
+ * make test #(for testing)
+
+## with cmake 
+
+ * git clone https://github.com/QuasarApp/Qt-Secret.git
+ * cd Qt-Secret
+ * git submodule update --init --recursive
+ * sudo apt install qt5-default
+ * cmake -DCMAKE_PREFIX_PATH=you/Qt/dir .
  * make -j8
  * make test #(for testing)
 
@@ -69,6 +83,18 @@ By default the padding method is `ISO`, however, the class supports:
  * git submodule add https://github.com/QuasarApp/Qt-Secret.git # add the repository of Qt-Secret into your repo like submodule
  * git submodule update --init --recursive
  * Add to the list of libraries for the Qt-Secret assembly. For an example you can create Main.Pro in which connect Qt-Secret and your project.pro files as subprojects.
+ 
+ ### For cmake projects
+ 
+ * cd yourRepo
+ * git submodule add https://github.com/QuasarApp/Qt-Secret.git # add the repository of Qt-Secret into your repo like submodule
+ * git submodule update --init --recursive
+ * Include in your CMakeLists.txt file the main CMakeLists.txt file of Qt-Secret library
+  ``` cmake
+    add_subdirectory(Qt-Secret)
+  ```
+ * Rebuild yuor project
+
  
  **Main.pro:**
 ``` qmake

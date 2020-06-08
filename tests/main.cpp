@@ -14,15 +14,17 @@
 #include <iostream>
 
 //const int testSize = 20;
-static const QHash <int,int > testSize = {
+static const QMap<QRSAEncryption::Rsa, int > testSize = {
     {QRSAEncryption::RSA_64, 128},
     {QRSAEncryption::RSA_128, 64},
     {QRSAEncryption::RSA_256, 32},
     {QRSAEncryption::RSA_512, 16},
     {QRSAEncryption::RSA_1024, 8},
     {QRSAEncryption::RSA_2048, 4},
+    {QRSAEncryption::RSA_3072, 2},
     {QRSAEncryption::RSA_4096, 2},
-    {QRSAEncryption::RSA_8192, 1}
+    {QRSAEncryption::RSA_6144, 1},
+    {QRSAEncryption::RSA_8192, 0}
 };
 
 QByteArray randomArray(int length = -1) {
@@ -97,10 +99,30 @@ bool checkKeys(const QByteArray& pubKey, const QByteArray& privKey,
     return true;
 }
 
+bool testGenesis(const QRSAEncryption& e) {
+    QByteArray
+    pubGenesis1, privGenesis1,
+    pubGenesis2, privGenesis2;
+
+    // check genesis
+    auto genesis = randomArray(0xFFFF);
+    if (!e.generatePairKey(pubGenesis1, privGenesis1, genesis)) {
+        print( "Fail to test genesis got generation keys " + QString::number(e.getRsa()));
+        return false;
+    }
+
+    if (!e.generatePairKey(pubGenesis2, privGenesis2, genesis)) {
+        print( "Fail to test genesis got generation keys " + QString::number(e.getRsa()));
+        return false;
+    }
+
+    return pubGenesis1 == pubGenesis2 && privGenesis1 == privGenesis2;
+};
 
 bool testCrypto(QRSAEncryption::Rsa rsa) {
 
     QByteArray pub, priv;
+
     QRSAEncryption e(rsa);
 
     for (int i = 0; i < testSize[rsa]; i++) {
@@ -109,6 +131,11 @@ bool testCrypto(QRSAEncryption::Rsa rsa) {
 
         if (!e.generatePairKey(pub, priv)) {
             print( "key not generated RSA" + QString::number(rsa));
+            return false;
+        }
+
+        if (!testGenesis(e)) {
+            print( "Test genesis failed. RSA" + QString::number(rsa));
             return false;
         }
 
@@ -200,32 +227,10 @@ int main() {
         return 1;
     }
 
-    if(!testCrypto(QRSAEncryption::Rsa::RSA_64)) {
-        return 1;
-    }
-
-    if(!testCrypto(QRSAEncryption::Rsa::RSA_128)) {
-        return 1;
-    }
-
-    if(!testCrypto(QRSAEncryption::Rsa::RSA_256)) {
-        return 1;
-    }
-
-    if(!testCrypto(QRSAEncryption::Rsa::RSA_512)) {
-        return 1;
-    }
-
-    if(!testCrypto(QRSAEncryption::Rsa::RSA_1024)) {
-        return 1;
-    }
-
-    if(!testCrypto(QRSAEncryption::Rsa::RSA_2048)) {
-        return 1;
-    }
-
-    if(!testCrypto(QRSAEncryption::Rsa::RSA_4096)) {
-        return 1;
+    for (auto testCase = testSize.begin(); testCase != testSize.end(); ++testCase) {
+        if(!testCrypto(testCase.key())) {
+            return 1;
+        }
     }
 
     print("Tests passed successfully");
