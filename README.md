@@ -30,7 +30,7 @@ Aes implementation was borrowed from [bricke](https://github.com/bricke/Qt-AES),
 Individual thanks [bricke](https://github.com/bricke) for implementing the AES encryption class.
 
 #### AES Levels
-The class supports all AES key lenghts
+The class supports all AES key lengths
 
 * AES_128
 * AES_192
@@ -82,19 +82,7 @@ By default the padding method is `ISO`, however, the class supports:
  * cd yourRepo
  * git submodule add https://github.com/QuasarApp/Qt-Secret.git # add the repository of Qt-Secret into your repo like submodule
  * git submodule update --init --recursive
- * Add to the list of libraries for the Qt-Secret assembly. For an example you can create Main.Pro in which connect Qt-Secret and your project.pro files as subprojects.
- 
- ### For cmake projects
- 
- * cd yourRepo
- * git submodule add https://github.com/QuasarApp/Qt-Secret.git # add the repository of Qt-Secret into your repo like submodule
- * git submodule update --init --recursive
- * Include in your CMakeLists.txt file the main CMakeLists.txt file of Qt-Secret library
-  ``` cmake
-    add_subdirectory(Qt-Secret)
-  ```
- * Rebuild yuor project
-
+ * Add to the list of libraries for the Qt-Secret assembly. For example, you can create Main.Pro in which connect Qt-Secret and your project.pro files as subprojects.
  
  **Main.pro:**
 ``` qmake
@@ -106,17 +94,31 @@ SUBDIRS += \
            MyProject
 ```
  * Include in your MyProject.pro file the pri file of Qt-Secret library
-  >> include($$PWD/../Qt-Secret/src/Qt-Secret.pri)
- * Rebuild yuor project
+ ``` qmake
+ include($$PWD/../Qt-Secret/src/Qt-Secret.pri)
+ ```
+ * Rebuild your project
 
-## for other build system
+ ### For cmake projects
+ 
+ * cd yourRepo
+ * git submodule add https://github.com/QuasarApp/Qt-Secret.git # add the repository of Qt-Secret into your repo like submodule
+ * git submodule update --init --recursive
+ * Include in your CMakeLists.txt file the main CMakeLists.txt file of Qt-Secret library
+  ``` cmake
+    add_subdirectory(Qt-Secret)
+    target_link_libraries(MyBinary PUBLIC Qt-Secret)
+  ```
+ * Rebuild your project
+
+## For other build systems
  
  * cd yourRepo
  * git submodule add https://github.com/QuasarApp/Qt-Secret.git # add the repository of Qt-Secret into your repo like submodule
  * git submodule update --init --recursive
  * Add the rule for build Qt-Secret
  * Add INCLUDEPATH and LIBS for your build system 
- * Rebuild yuor project
+ * Rebuild your project
 
 
 #### Detailed instructions of include in QtCreator see [here](Doc/QtCreator.md).
